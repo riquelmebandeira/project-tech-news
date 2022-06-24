@@ -10,7 +10,8 @@ def fetch(url):
 
     try:
         response = requests.get(
-            url, timeout=3, headers={"user-agent": "Fake user-agent"})
+            url, timeout=3, headers={"user-agent": "Fake user-agent"}
+        )
 
         if not response.status_code == 200:
             response.raise_for_status()
@@ -41,7 +42,20 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_noticia(html_content):
-    """Seu código deve vir aqui"""
+    selector = Selector(text=html_content)
+
+    news_details = {
+        "url": selector.css("link[rel='canonical']::attr(href)").get(),
+        "title": selector.css(".entry-title::text").get(),
+        "timestamp": selector.css(".meta-date::text").get(),
+        "writer": selector.css(".author a::text").get(),
+        "summary": selector.xpath("string(//p)").get(),
+        "comments_count": 0,
+        "tags": selector.css("a[rel='tag']::text").getall(),
+        "category": selector.css(".label::text").get(),
+    }
+
+    return news_details
 
 
 # Requisito 5
