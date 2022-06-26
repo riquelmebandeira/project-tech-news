@@ -46,8 +46,8 @@ def scrape_noticia(html_content):
     selector = Selector(text=html_content)
 
     news_details = {
-        "url": selector.css("link[rel='canonical']::attr(href)").get(),
         "title": selector.css(".entry-title::text").get(),
+        "url": selector.css("link[rel='canonical']::attr(href)").get(),
         "timestamp": selector.css(".meta-date::text").get(),
         "writer": selector.css(".author a::text").get(),
         "summary": selector.xpath("string(//p)").get(),
