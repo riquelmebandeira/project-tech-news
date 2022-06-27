@@ -23,20 +23,13 @@ def search_by_date(date):
 
 # Requisito 8
 def search_by_tag(tag):
-    """Seu código deve vir aqui"""
+    news = list(
+        search_news({"tags": {"$elemMatch": {"$regex": tag, "$options": "i"}}})
+    )
+
+    return get_news_title_and_url(news)
 
 
 # Requisito 9
 def search_by_category(category):
     """Seu código deve vir aqui"""
-
-
-inputs = [
-    "21-12-1980",
-]
-
-for date in inputs:
-    try:
-        search_by_date(date)
-    except ValueError:
-        print("errou!")
