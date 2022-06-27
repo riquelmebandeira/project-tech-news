@@ -1,22 +1,24 @@
 from tech_news.database import search_news
+from utils.index import (
+    get_news_title_and_url,
+    validate_date_format,
+)
 
 
 # Requisito 6
 def search_by_title(title):
-    query = list(
-        search_news(
-            {"title": {"$regex": title, "$options": "i"}},
-        )
-    )
+    news = list(search_news({"title": {"$regex": title, "$options": "i"}}))
 
-    output = [(news["title"], news["url"]) for news in query]
-
-    return output
+    return get_news_title_and_url(news)
 
 
 # Requisito 7
 def search_by_date(date):
-    """Seu código deve vir aqui"""
+    query = validate_date_format(date)
+
+    news = list(search_news({"timestamp": query}))
+
+    return get_news_title_and_url(news)
 
 
 # Requisito 8
@@ -27,3 +29,14 @@ def search_by_tag(tag):
 # Requisito 9
 def search_by_category(category):
     """Seu código deve vir aqui"""
+
+
+inputs = [
+    "21-12-1980",
+]
+
+for date in inputs:
+    try:
+        search_by_date(date)
+    except ValueError:
+        print("errou!")
